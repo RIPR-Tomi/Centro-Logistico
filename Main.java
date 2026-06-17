@@ -202,6 +202,47 @@ public class Main {
         }
     }
 
+    
+ // ==================== EXPEDICION ====================
+
+    private static void encolarPedido() {
+        System.out.println("\n--- ENCOLAR PEDIDO ---");
+        String destino = leerTexto("Sucursal destino: ");
+        if (!grafoSucursales.existeSucursal(destino)) {
+            System.out.println("Sucursal no encontrada. Use la opcion 12 para ver sucursales.");
+            return;
+        }
+        String desc = leerTexto("Descripcion del pedido: ");
+
+        Pedido p = new Pedido(proximoIdPedido, destino, desc);
+        proximoIdPedido = proximoIdPedido + 1;
+        colaPedidos.encolar(p);
+
+        System.out.println("Pedido encolado: " + p);
+    }
+
+    private static void despacharPedido() {
+        System.out.println("\n--- DESPACHAR SIGUIENTE PEDIDO ---");
+        if (colaPedidos.estaVacia()) {
+            System.out.println("No hay pedidos en la cola.");
+            return;
+        }
+        Pedido p = colaPedidos.desencolar();
+        System.out.println("Despachado: " + p);
+        System.out.println("Pedidos restantes en cola: " + colaPedidos.getTamanio());
+    }
+
+    private static void listarPedidos() {
+        System.out.println("\n--- PEDIDOS EN COLA (frente -> fin) ---");
+        if (colaPedidos.estaVacia()) {
+            System.out.println("No hay pedidos en la cola.");
+            return;
+        }
+        Pedido[] pedidos = colaPedidos.obtenerTodos();
+        for (int i = 0; i < pedidos.length; i++) {
+            System.out.println((i + 1) + ". " + pedidos[i]);
+        }
+
     private static void cargarDatosPrueba() {
 
         Producto p1 = new Producto("P001", "Tornillos", 120, "A1");
@@ -237,4 +278,7 @@ public class Main {
         System.out.print(mensaje);
         return Double.parseDouble(scanner.nextLine().trim());
     }
+
+
+    
 }
